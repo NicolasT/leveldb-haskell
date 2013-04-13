@@ -142,7 +142,7 @@ bloomFilter :: MonadResource m => Int -> m BloomFilter
 bloomFilter i = do
     let i' = fromInteger . toInteger $ i
     fp_ptr <- snd <$> allocate (c_leveldb_filterpolicy_create_bloom i')
-                               (c_leveldb_filterpolicy_destroy)
+                               c_leveldb_filterpolicy_destroy
     return . BloomFilter $ fp_ptr
 
 
