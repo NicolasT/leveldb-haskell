@@ -680,17 +680,17 @@ iterGetError (Iterator iter_ptr _) = liftIO $
 -- what you want for large ranges. You may consider using conduits instead, for
 -- an example see: <https://gist.github.com/adc8ec348f03483446a5>
 mapIter :: MonadResource m => (Iterator -> m a) -> Iterator -> m [a]
-mapIter = go []
+mapIter f = go []
 
     where
-        go acc f iter = do
+        go acc iter = do
             valid <- iterValid iter
             if not valid
                 then return acc
                 else do
                     val <- f iter
                     _   <- iterNext iter
-                    go (val : acc) f iter
+                    go (val : acc) iter
 
 -- | Return a list of key and value tuples from an iterator. The iterator
 -- should be put in the right position prior to calling this with the iterator.
